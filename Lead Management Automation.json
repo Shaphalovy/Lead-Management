@@ -1,0 +1,523 @@
+{
+  "name": "Lead Management Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-form",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "86b35698-a77a-4c3a-a648-0bea94265814",
+      "name": "Lead Form Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -128,
+        48
+      ],
+      "webhookId": "674a8b0a-c70c-4cf5-b960-cf690efa5752"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "leadId",
+              "value": "={{ \"LD-\" + $now.toMillis() }}",
+              "type": "string"
+            },
+            {
+              "id": "a2",
+              "name": "submissionDate",
+              "value": "={{ $now.setZone(\"Asia/Dhaka\").toFormat(\"yyyy-MM-dd HH:mm:ss\") }}",
+              "type": "string"
+            },
+            {
+              "id": "a3",
+              "name": "name",
+              "value": "={{ ($json.body?.name ?? $json.name ?? \"\").toString().trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "a4",
+              "name": "firstName",
+              "value": "={{ ($json.body?.name ?? $json.name ?? \"there\").toString().trim().split(\" \")[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "a5",
+              "name": "email",
+              "value": "={{ ($json.body?.email ?? $json.email ?? \"\").toString().trim().toLowerCase() }}",
+              "type": "string"
+            },
+            {
+              "id": "a6",
+              "name": "company",
+              "value": "={{ ($json.body?.company ?? $json.company ?? \"\").toString().trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "a7",
+              "name": "service",
+              "value": "={{ ($json.body?.service ?? $json.service ?? \"\").toString().trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "a8",
+              "name": "message",
+              "value": "={{ ($json.body?.message ?? $json.message ?? \"\").toString().trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "a9",
+              "name": "serviceBlurb",
+              "value": "={{ ({\"Website Design & Development\": \"a fast, conversion-focused website that makes the next step obvious\", \"SEO & Content\": \"technical SEO and useful content that brings in people already searching for what you sell\", \"Social Media Marketing\": \"consistent, on-brand social content and campaigns focused on real enquiries\", \"Email & Marketing Automation\": \"instant replies and follow-up sequences so no enquiry sits unanswered\", \"Brand Identity\": \"a logo, colour and tone of voice that make you look established from day one\"})[($json.body?.service ?? $json.service ?? \"\").toString().trim()] ?? \"a growth plan tailored to your business\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2223772a-93e4-4d55-b639-763e1115feb0",
+      "name": "Normalize Lead",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        192,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "cachedResultName": "Lead Management",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_Fm8slRa0rYix0udGG_OHktDWspVzmoy16vhTQwkqcY/edit?usp=drivesdk",
+          "mode": "list",
+          "value": "1_Fm8slRa0rYix0udGG_OHktDWspVzmoy16vhTQwkqcY"
+        },
+        "sheetName": {
+          "__rl": true,
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_Fm8slRa0rYix0udGG_OHktDWspVzmoy16vhTQwkqcY/edit#gid=0",
+          "mode": "list",
+          "value": "gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "Lead ID",
+              "id": "Lead ID",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "Submission Date",
+              "id": "Submission Date",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "Name",
+              "id": "Name",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "Email",
+              "id": "Email",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "Company Name",
+              "id": "Company Name",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "Interested Service",
+              "id": "Interested Service",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "Message",
+              "id": "Message",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "Email Status",
+              "id": "Email Status",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "Sent Time",
+              "id": "Sent Time",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "value": {
+            "Company Name": "={{ $json.company }}",
+            "Email": "={{ $json.email }}",
+            "Email Status": "Pending",
+            "Interested Service": "={{ $json.service }}",
+            "Lead ID": "={{ $json.leadId }}",
+            "Message": "={{ $json.message }}",
+            "Name": "={{ $json.name }}",
+            "Sent Time": "",
+            "Submission Date": "={{ $json.submissionDate }}"
+          }
+        },
+        "options": {
+          "cellFormat": "RAW"
+        }
+      },
+      "id": "af8fdaa2-efc3-4c90-83c0-5d39e4fa41e7",
+      "name": "Save Lead to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        448,
+        48
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "19To7cTh5sCHZSn0",
+          "name": "shapaholovy@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $(\"Normalize Lead\").first().json.email }}",
+        "subject": "=Thanks for contacting Lumora Digital, {{ $(\"Normalize Lead\").first().json.firstName }}",
+        "message": "=<div style=\"font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:0 auto;color:#141a33;line-height:1.6\"><h2 style=\"color:#5b4bd6;margin-bottom:8px\">Hi {{ $(\"Normalize Lead\").first().json.firstName }},</h2><p>Thank you for getting in touch with <b>Lumora Digital</b>. We have received your enquiry for <b>{{ $(\"Normalize Lead\").first().json.company }}</b>.</p><p>We are a growth agency that designs fast websites, grows search traffic and automates the follow-ups that turn enquiries into customers. Our services include website design and development, SEO and content, social media marketing, email and marketing automation, and brand identity.</p><p>You told us you are interested in <b>{{ $(\"Normalize Lead\").first().json.service }}</b>. In practice that means {{ $(\"Normalize Lead\").first().json.serviceBlurb }}.</p><p><b>What happens next?</b><br>A member of our team will review your message and reply personally within one business day with a tailored proposal.</p><p style=\"margin-top:24px\">Warm regards,<br><b>The Lumora Digital Team</b></p><hr style=\"border:none;border-top:1px solid #e1e6f0;margin:24px 0\"><p style=\"font-size:12px;color:#566080\">You are receiving this because you submitted the contact form on our website.</p></div>",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Lumora Digital"
+        }
+      },
+      "id": "3cfb15fa-ab47-42a7-98c4-ee9d728cc1a0",
+      "name": "Send Welcome Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        752,
+        48
+      ],
+      "webhookId": "3395a96f-fad7-4a03-919b-02f0b5f4ee77",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "wxSyrQlxESDIIkuJ",
+          "name": "shapaholovy@gmail.com"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "cachedResultName": "Lead Management",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_Fm8slRa0rYix0udGG_OHktDWspVzmoy16vhTQwkqcY/edit?usp=drivesdk",
+          "mode": "list",
+          "value": "1_Fm8slRa0rYix0udGG_OHktDWspVzmoy16vhTQwkqcY"
+        },
+        "sheetName": {
+          "__rl": true,
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_Fm8slRa0rYix0udGG_OHktDWspVzmoy16vhTQwkqcY/edit#gid=0",
+          "mode": "list",
+          "value": "gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "matchingColumns": [
+            "Lead ID"
+          ],
+          "schema": [
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "Lead ID",
+              "id": "Lead ID",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "Email Status",
+              "id": "Email Status",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "Sent Time",
+              "id": "Sent Time",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "value": {
+            "Email Status": "Sent",
+            "Lead ID": "={{ $(\"Normalize Lead\").first().json.leadId }}",
+            "Sent Time": "={{ $now.setZone(\"Asia/Dhaka\").toFormat(\"yyyy-MM-dd HH:mm:ss\") }}"
+          }
+        },
+        "options": {
+          "cellFormat": "RAW"
+        }
+      },
+      "id": "8d86b608-2208-4593-b043-cff2d3fef8a8",
+      "name": "Mark Status as Sent",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1104,
+        32
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "19To7cTh5sCHZSn0",
+          "name": "shapaholovy@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: true, emailStatus: \"Sent\", leadId: $(\"Normalize Lead\").first().json.leadId }) }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "31fa53d8-ee31-4a6d-8c09-d5f2613399f9",
+      "name": "Respond Success",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1440,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "cachedResultName": "Lead Management",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_Fm8slRa0rYix0udGG_OHktDWspVzmoy16vhTQwkqcY/edit?usp=drivesdk",
+          "mode": "list",
+          "value": "1_Fm8slRa0rYix0udGG_OHktDWspVzmoy16vhTQwkqcY"
+        },
+        "sheetName": {
+          "__rl": true,
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_Fm8slRa0rYix0udGG_OHktDWspVzmoy16vhTQwkqcY/edit#gid=0",
+          "mode": "list",
+          "value": "gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "matchingColumns": [
+            "Lead ID"
+          ],
+          "schema": [
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "Lead ID",
+              "id": "Lead ID",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "Email Status",
+              "id": "Email Status",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "value": {
+            "Email Status": "Failed",
+            "Lead ID": "={{ $(\"Normalize Lead\").first().json.leadId }}"
+          }
+        },
+        "options": {
+          "cellFormat": "RAW"
+        }
+      },
+      "id": "2e526b5e-0619-4dd9-aa7a-cb6a48b14257",
+      "name": "Mark Status as Failed",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1104,
+        272
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "19To7cTh5sCHZSn0",
+          "name": "shapaholovy@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: true, emailStatus: \"Failed\", leadId: $(\"Normalize Lead\").first().json.leadId }) }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "1445d1bc-512f-4194-99e7-4f28ff227dc8",
+      "name": "Respond Lead Saved",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1440,
+        272
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Lead Form Webhook": {
+      "main": [
+        [
+          {
+            "node": "Normalize Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Lead": {
+      "main": [
+        [
+          {
+            "node": "Save Lead to Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Lead to Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Send Welcome Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Welcome Email": {
+      "main": [
+        [
+          {
+            "node": "Mark Status as Sent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mark Status as Failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark Status as Sent": {
+      "main": [
+        [
+          {
+            "node": "Respond Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark Status as Failed": {
+      "main": [
+        [
+          {
+            "node": "Respond Lead Saved",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true
+  },
+  "versionId": "754cfbe6-3585-4141-a787-7d26d3d3e3dc",
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp",
+    "instanceId": "b277ffb704d193e37d79cd36a97a577916e40e414ad2e22281dbeda31d32e3ca"
+  },
+  "nodeGroups": [],
+  "id": "dpYd8allc7i7NvAJ",
+  "tags": []
+}
